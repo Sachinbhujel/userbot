@@ -160,17 +160,16 @@ async def kick_user(event):
         
 @sattu.on(events.NewMessage(pattern=r'\.spam (\d+)'))
 async def spam_stickers(event):
-    count = int(event.pattern_match.group(1))  # Get the number of spams to send
-    replied_message = await event.get_reply_message()  # Get the replied message
-    
-    if replied_message and replied_message.sticker:  # Check if the replied message has a sticker
-        sticker = replied_message.sticker  # Capture the sticker from the replied message
+    count = int(event.pattern_match.group(1))
+    replied_message = await event.get_reply_message() 
+    if replied_message and replied_message.sticker: 
+        sticker = replied_message.sticker 
         for _ in range(count):
-            await event.respond(sticker)  # Spam the sticker
-            await asyncio.sleep(0.5)  # Small delay to avoid spamming too fast
-        await event.delete()  # Optionally delete the command message after execution
+            await event.respond(file=sticker) 
+            await asyncio.sleep(0.5) 
+        await event.delete() 
     else:
-        await event.reply("❌ Please reply to a sticker to spam it.")  # If the message is not a sticker
+        await event.reply("❌ Please reply to a sticker to spam it.")
 
 sattu.start()
 sattu.run_until_disconnected()
