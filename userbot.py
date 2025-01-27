@@ -139,20 +139,16 @@ async def weather(event):
 Stay safe and have a great day! ☀️
 """
         await event.edit(weather_message)
-        
-        
+         
         
 @sattu.on(events.NewMessage(pattern=r'\.nikal @(\w+)'))
 async def kick_user(event):
     username = event.pattern_match.group(1)
     
     try:
-        user = await sattu.get_entity(username)
-        
+        user = await sattu.get_entity(username) 
         await event.reply(f"🚫 **Kicking user {username}...**")
-        
         await event.client.kick_participant(event.chat_id, user.id)
-        
         await event.reply(f"✅ **{username} को ग्रुप से ऐसे बाहर किया, जैसे आइसक्रीम गिरा दी हो! 🍦💨**")
     
     except ValueError:
@@ -160,7 +156,21 @@ async def kick_user(event):
     
     except Exception as e:
         await event.reply(f"❌ **An error occurred while kicking the user:** {str(e)}")
-
+        
+        
+@sattu.on(events.NewMessage(pattern=r'\.spam (\d+)'))
+async def spam_stickers(event):
+    count = int(event.pattern_match.group(1))  # Get the number of spams to send
+    replied_message = await event.get_reply_message()  # Get the replied message
+    
+    if replied_message and replied_message.sticker:  # Check if the replied message has a sticker
+        sticker = replied_message.sticker  # Capture the sticker from the replied message
+        for _ in range(count):
+            await event.respond(sticker)  # Spam the sticker
+            await asyncio.sleep(0.5)  # Small delay to avoid spamming too fast
+        await event.delete()  # Optionally delete the command message after execution
+    else:
+        await event.reply("❌ Please reply to a sticker to spam it.")  # If the message is not a sticker
 
 sattu.start()
 sattu.run_until_disconnected()
