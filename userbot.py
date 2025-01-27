@@ -9,7 +9,7 @@ sattu = TelegramClient('session', api_id, api_hash)
 
 
 @sattu.on(events.NewMessage(outgoing=True, pattern='.greet'))
-async def greeting(event):
+async def greet(event):
     sent_message = event.message
     await sent_message.edit('Hello Group Members! How are you all?')
 
@@ -73,20 +73,18 @@ async def spam(event):
         await event.delete() 
 
 
-@sattu.on(events.NewMessage(outgoing=True, pattern=r'craid (\d+)'))
+@sattu.on(events.NewMessage(outgoing=True, pattern=r'\.craid (\d+)'))
 async def craid(event):
-    # Extract the number from the command
-    number = event.pattern_match.group(1)
+    # Generate 12 random responses (1 original + 11 additional)
+    for _ in range(12):
+        random_letter = random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+        result = random_letter * 150  # Only the letter repeated 50 times, no number included
+        
+        # Reply with the generated string
+        await event.respond(result)
     
-    # Generate a random uppercase letter
-    random_letter = random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-    
-    # Create the string with the letter repeated 50 times, followed by the number
-    result = f"{random_letter * 50} {number}"
-    
-    # Reply with the generated string
-    await event.respond(result)
-    await event.delete()  
+    # Delete the original command message
+    await event.delete()
 
 
 sattu.start()
