@@ -138,8 +138,29 @@ async def weather(event):
 
 Stay safe and have a great day! ☀️
 """
-        # Send the response with weather details
         await event.edit(weather_message)
+        
+        
+        
+@sattu.on(events.NewMessage(pattern=r'\.nikal @(\w+)'))
+async def kick_user(event):
+    username = event.pattern_match.group(1)
+    
+    try:
+        user = await sattu.get_entity(username)
+        
+        await event.reply(f"🚫 **Kicking user {username}...**")
+        
+        await event.client.kick_participant(event.chat_id, user.id)
+        
+        await event.reply(f"✅ **{username} को ग्रुप से ऐसे बाहर किया, जैसे आइसक्रीम गिरा दी हो! 🍦💨**")
+    
+    except ValueError:
+        await event.reply(f"❌ **User {username} not found!**")
+    
+    except Exception as e:
+        await event.reply(f"❌ **An error occurred while kicking the user:** {str(e)}")
+
 
 sattu.start()
 sattu.run_until_disconnected()
