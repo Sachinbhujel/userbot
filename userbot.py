@@ -1,3 +1,4 @@
+import requests
 import random
 import asyncio
 from telethon import TelegramClient, events
@@ -64,28 +65,81 @@ Ping: {formatted_ping} ms
 @sattu.on(events.NewMessage(outgoing=True, pattern=r'\.spam (\d+) (.+)'))
 async def spam(event):
     count = int(event.pattern_match.group(1))
-    message = event.pattern_match.group(2)
-    
+    message = event.pattern_match.group(2)   
     for _ in range(count):
         await event.respond(message)
-        await asyncio.sleep(0.1) 
+        await asyncio.sleep(0.01) 
 
         await event.delete() 
 
 
 @sattu.on(events.NewMessage(outgoing=True, pattern=r'\.craid (\d+)'))
 async def craid(event):
-    # Generate 12 random responses (1 original + 11 additional)
-    for _ in range(12):
-        random_letter = random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-        result = random_letter * 150  # Only the letter repeated 50 times, no number included
-        
-        # Reply with the generated string
-        await event.respond(result)
+    number_of_craids = int(event.pattern_match.group(1))
+
+    replied_user = await event.get_reply_message()
+    if replied_user:
+        if replied_user.sender.username:
+            sender_name = f"@{replied_user.sender.username}"
+        else:
+            sender_name = f"[{replied_user.sender.first_name}](tg://user?id={replied_user.sender.id})"
+
+        for _ in range(number_of_craids):
+            random_letter = random.choice("ABCDEFGHJKLMNOPQRSTUVWXYZ")
+            result = f"{sender_name} " + (random_letter * 170)
+            await event.respond(result)
     
-    # Delete the original command message
     await event.delete()
 
+
+@sattu.on(events.NewMessage(outgoing=True, pattern=r'\.scraid (\d+)'))
+async def scraid(event):
+    number_of_craids = int(event.pattern_match.group(1))
+    for _ in range(number_of_craids):
+        random_letter = random.choice("abcdefghijklmnopqrstuvwxyz")
+        result = random_letter * 170 
+        
+        await event.respond(result)
+        await event.delete()
+
+
+@sattu.on(events.NewMessage(pattern=r'\.weather (.+)'))
+async def weather(event):
+    city = event.pattern_match.group(1)
+    api_key = "08b2a9ece1deb607c45a0ef084d7e7e4"
+    
+    url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}"
+    response = requests.get(url).json()
+    
+    if response["cod"] == 404:
+        await event.respond(f"❌ **City '{city}' not found!** Please check the city name and try again.")
+    else:
+        main = response["main"]
+        weather = response["weather"][0]["description"]
+        temperature = main["temp"] - 273.15
+        humidity = main["humidity"]
+        pressure = main["pressure"]
+        wind_speed = response["wind"]["speed"]
+        icon_code = response["weather"][0]["icon"]
+
+        icon_url = f"http://openweathermap.org/img/wn/{icon_code}@2x.png"
+
+        weather_message = f"""
+**🌍 Weather in {city}:**
+
+🌀 **Condition**: {weather.capitalize()}
+🌡️ **Temperature**: {temperature:.2f}°C
+💨 **Wind Speed**: {wind_speed} m/s
+💧 **Humidity**: {humidity}%
+🌬️ **Pressure**: {pressure} hPa
+
+🔍 **More Info**:
+- 🌤️ **Weather Icon**: ![Icon]({icon_url})
+
+Stay safe and have a great day! ☀️
+"""
+        # Send the response with weather details
+        await event.edit(weather_message)
 
 sattu.start()
 sattu.run_until_disconnected()
