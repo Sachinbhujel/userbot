@@ -168,7 +168,7 @@ async def kick_user(event):
         await event.reply(f"❌ **An error occurred while kicking the user:** {str(e)}")
         
         
-@sattu.on(events.NewMessage(pattern=r'\.sspam (\d+)'))
+@sattu.on(events.NewMessage(pattern=r'\.sspam (\d+)\s*$'))
 async def spam_stickers(event):
     count = int(event.pattern_match.group(1))
     replied_message = await event.get_reply_message() 
@@ -182,7 +182,7 @@ async def spam_stickers(event):
         await event.reply("❌ Please reply to a sticker to spam it.")
         
         
-@sattu.on(events.NewMessage(pattern=r'\.mspam (\d+)'))
+@sattu.on(events.NewMessage(pattern=r'\.mspam (\d+)\s*$'))
 async def spam_messages(event):
     count = int(event.pattern_match.group(1))
     replied_message = await event.get_reply_message() 
