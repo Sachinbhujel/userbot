@@ -253,14 +253,6 @@ async def greeting(event):
     await event.edit("System override complete. Done.🔴")
 
 
-@sattu.on(events.NewMessage(pattern=r"\.rabbit"))
-async def greeting(event):
-        await event.edit("""
-    (\(\ 
-    ( -.-)
-    o_(")(")
-      """)
-
 
 sattu.start()
 sattu.run_until_disconnected()
