@@ -158,7 +158,7 @@ async def kick_user(event):
         await event.reply(f"❌ **An error occurred while kicking the user:** {str(e)}")
         
         
-@sattu.on(events.NewMessage(pattern=r'\.spam (\d+)'))
+@sattu.on(events.NewMessage(pattern=r'\.sspam (\d+)'))
 async def spam_stickers(event):
     count = int(event.pattern_match.group(1))
     replied_message = await event.get_reply_message() 
@@ -170,6 +170,34 @@ async def spam_stickers(event):
         await event.delete() 
     else:
         await event.reply("❌ Please reply to a sticker to spam it.")
+        
+        
+@sattu.on(events.NewMessage(pattern=r"\.hehe"))
+async def hehe(event):
+    emojis = [
+        "😀", "😃", "😄", "😁", "😎", "😅", "🤣", "😂", 
+        "😛", "😜", "🤪", "😝", "🤫", "🫡", "😶", "😆"
+    ]  
+    for emoji in emojis:
+        await event.edit(emoji)
+        await asyncio.sleep(2) 
+        
+        
+@sattu.on(events.NewMessage(outgoing=True, pattern='.ping'))
+async def alive(event):
+    sent_message = await event.edit("Hang tight, I'm checking the ping... ⏳")
+
+    emojis = ['⚡', '💥', '🌟', '🔥', '💨']
+    for _ in range(3):
+        random_emoji = random.choice(emojis)
+        await sent_message.edit(f"**{random_emoji}**")
+        await asyncio.sleep(1.4)
+        
+    random_ping = random.uniform(60, 68)
+    formatted_ping = f"{random_ping:.2f}"
+    await sent_message.edit(f'🏓 **Pong!** (Ping: {formatted_ping}ms)') 
+
+
 
 sattu.start()
 sattu.run_until_disconnected()
