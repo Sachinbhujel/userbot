@@ -3,6 +3,8 @@ import random
 import asyncio
 from telethon import TelegramClient, events
 from telethon import events
+from telethon.errors import UserNotParticipantError
+from telethon.tl.types import User
 
 
 api_id = 22798308 
