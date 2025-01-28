@@ -328,15 +328,11 @@ async def potocmd(event):
 async def clear_chat(event):
     if event.sender_id != OWNER_ID:
         return await event.reply("`𝗢𝗡𝗟𝗬 𝑺𝒂𝒕𝒕𝒖 𝒄𝒂𝒏 𝒖𝒔𝒆 𝒕𝒉𝒊𝒔 𝒄𝒐𝒎𝒎𝒂𝒏𝒅! 💥`")
-    
-    participant = await event.client.get_permissions(event.chat_id, event.sender_id)
-    
-    if not participant.is_admin:
-        return await event.reply("❌ **You need to be an admin to use this command.**")
-    
-    async for message in event.client.iter_messages(event.chat_id, limit=100):
+
+    async for message in event.client.iter_messages(event.chat_id, limit=100):  # Modify to clear the number of messages you want
         await message.delete()
-        await event.reply("🧹 **Chat Cleared!**", delete_after=5)
+
+    await event.reply("🧹 **Chat Cleared!**", delete_after=5)
 
 sattu.start()
 sattu.run_until_disconnected()
