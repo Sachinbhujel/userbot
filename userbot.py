@@ -2,6 +2,7 @@ import requests
 import random
 import asyncio
 from telethon import TelegramClient, events
+from googletrans import Translator
 
 
 api_id = 22798308 
@@ -12,7 +13,20 @@ sattu = TelegramClient('session', api_id, api_hash)
 @sattu.on(events.NewMessage(outgoing=True, pattern='.greet'))
 async def greet(event):
     sent_message = event.message
-    await sent_message.edit('Hello Group Members! How are you all?')
+    wishes = [
+        "Aaj ka din badhiya ho, doston! 💪",
+        "Let's make today awesome together! 🌟",
+        "Keep the good vibes going! 🌸",
+        "Aaj kuch zabardast karte hain! 🎉"
+    ]
+    random_wish = random.choice(wishes)
+    await sent_message.edit(f'''
+👋 **Hello Group Members!** 👋
+
+How's everyone doing today? 😊
+
+{random_wish}
+''')   
 
 
 @sattu.on(events.NewMessage(outgoing=True, pattern='^\.hi$'))
@@ -194,8 +208,19 @@ async def ping(event):
         
     random_ping = random.uniform(60, 68)
     formatted_ping = f"{random_ping:.2f}"
-    await event.edit(f'🏓 **Pong!** (Ping: {formatted_ping}ms)') 
+    await event.edit(f'🏓 **Pong!** (Ping: {formatted_ping}ms)')
+    
 
+@sattu.on(events.NewMessage(outgoing=True, pattern=r'\.translate (.+)'))
+async def translate(event):
+    text = event.pattern_match.group(1)
+    
+    translator = Translator()
+    translated = translator.translate(text, dest='hi')
+    
+    translated_text = translated.text
+    await event.respond(f"**Original Text:**\n{text}\n\n**Translated to Hindi:**\n{translated_text}")
+    
 
 
 sattu.start()
