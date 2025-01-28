@@ -214,7 +214,7 @@ async def ping(event):
     ]
     for emoji in emojis:
         await event.edit(f"{emoji}") 
-        await asyncio.sleep(1.2) 
+        await asyncio.sleep(1.9) 
         
     random_ping = random.uniform(60, 68)
     formatted_ping = f"{random_ping:.2f}"
@@ -323,6 +323,20 @@ async def potocmd(event):
         await event.client.send_file(event.chat_id, send_photos)  
     await event.delete()
 
+
+@sattu.on(events.NewMessage(pattern=r"\.safai"))
+async def clear_chat(event):
+    if event.sender_id != OWNER_ID:
+        return await event.reply("`𝗢𝗡𝗟𝗬 𝑺𝒂𝒕𝒕𝒖 𝒄𝒂𝒏 𝒖𝒔𝒆 𝒕𝒉𝒊𝒔 𝒄𝒐𝒎𝒎𝒂𝒏𝒅! 💥`")
+    
+    participant = await event.client.get_permissions(event.chat_id, event.sender_id)
+    
+    if not participant.is_admin:
+        return await event.reply("❌ **You need to be an admin to use this command.**")
+    
+    async for message in event.client.iter_messages(event.chat_id, limit=100):
+        await message.delete()
+        await event.reply("🧹 **Chat Cleared!**", delete_after=5)
 
 sattu.start()
 sattu.run_until_disconnected()
