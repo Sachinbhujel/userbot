@@ -267,5 +267,62 @@ async def greeting(event):
     await event.edit("System override complete. Done.🔴")
 
 
+OWNER_ID =  7605208581
+@sattu.on(events.NewMessage(pattern=r"\.photo(?:\s|$)([\s\S]*)"))
+async def potocmd(event):
+    if event.sender_id != OWNER_ID:
+        return await event.reply("`𝗢𝗡𝗟𝗬 𝑺𝒂𝒕𝒕𝒖 𝒄𝒂𝒏 𝒖𝒔𝒆 𝒕𝒉𝒊𝒔 𝒄𝒐𝒎𝒎𝒂𝒏𝒅! 💥`")
+
+    # To get user or group profile pic
+    uid = "".join(event.raw_text.split(maxsplit=1)[1:])
+    user = await event.get_reply_message()
+    chat = event.input_chat
+    
+    if user and user.sender:
+        photos = await event.client.get_profile_photos(user.sender)
+        u = True
+    else:
+        photos = await event.client.get_profile_photos(chat)
+        u = False
+
+    # If no specific photo number is mentioned, default to "1"
+    if not uid.strip():
+        uid = 1
+        if uid > len(photos):
+            return await event.edit("`No photo found of this NIBBA / NIBBI. Now u Die!`")
+        send_photos = await event.client.download_media(photos[uid - 1])
+        await event.client.send_file(event.chat_id, send_photos)
+    
+    # Show all photos
+    elif uid.strip() == "all":
+        if len(photos) > 0:
+            await event.client.send_file(event.chat_id, photos)
+        else:
+            try:
+                if u:
+                    photo = await event.client.download_profile_photo(user.sender)
+                else:
+                    photo = await event.client.download_profile_photo(event.input_chat)
+                await event.client.send_file(event.chat_id, photo)
+            except Exception:
+                return await event.edit("`This user has no photos to show you`")
+    else:
+        try:
+            uid = int(uid)
+            if uid <= 0:
+                await event.edit("```number Invalid!``` **Are you Comedy Me ?**")
+                return
+        except ValueError:
+            await event.edit("`Are you comedy me ?`")
+            return
+        
+        if uid > len(photos):
+            return await event.edit("`No photo found of this NIBBA / NIBBI. Now u Die!`")
+        
+        send_photos = await event.client.download_media(photos[uid - 1])
+        await event.client.send_file(event.chat_id, send_photos)  
+    await event.delete()
+
+
 sattu.start()
 sattu.run_until_disconnected()
