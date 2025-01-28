@@ -64,21 +64,12 @@ async def varshu(event):
 
 @sattu.on(events.NewMessage(outgoing=True, pattern='.alive'))
 async def alive(event):
-    # Send a temporary "Checking..." message
-    sent_message = await event.edit("Checking...")
-
-    # Wait for a second before responding
+    sent_message =await event.edit("Initiating bot check... 🚨")
     await asyncio.sleep(1)
 
-    # Define the image URL and description
-    image_url = "https://www.comingsoon.net/wp-content/uploads/sites/3/2024/04/jujutsu-kaisen-jin-itadori-family-tree.png?resize=1024,576"
-    description = f'''
-Bot is alive! ✅
-    '''
-
-    # Send the image with the description
-    await sent_message.edit("Bot is alive! ✅")
-    await event.respond(description, file=image_url)
+    image_url = "https://www.comingsoon.net/wp-content/uploads/sites/3/2024/04/jujutsu-kaisen-jin-itadori-family-tree.png?resize=624,576"
+    roast_comment = "**लगता है इस GC में किसी ने आखिरकार मुझे जगा ही लिया... 🤦‍♂️**"
+    await event.edit(f"**Bot is alive! ✅**\n\n{roast_comment}\n\n**Owner:- @sattu879**\n**Developer:-** The wizard who made this magic happen. 🔮", file=image_url)
 
 
 @sattu.on(events.NewMessage(outgoing=True, pattern=r'\.spam (\d+) (.+)'))
@@ -214,7 +205,62 @@ async def ping(event):
     random_ping = random.uniform(60, 68)
     formatted_ping = f"{random_ping:.2f}"
     await event.edit(f'🏓 **Pong!** (Ping: {formatted_ping}ms)')
-        
-        
+
+
+@sattu.on(events.NewMessage(pattern=r"\.hack"))
+async def greeting(event):
+    await event.edit("🔓 Trying to get the weakness...")
+    await asyncio.sleep(1.5)
+    
+    await event.edit("🔍 Searching for vulnerabilities...")
+    await asyncio.sleep(2)
+    
+    await event.edit("[Processing.                     ] 5%")
+    await asyncio.sleep(0.5)
+    await event.edit("[Processing...                   ] 10%")
+    await asyncio.sleep(0.5)
+    await event.edit("[Processing.....                 ] 25%")
+    await asyncio.sleep(1)
+    await event.edit("[Processing........              ] 40%")
+    await asyncio.sleep(0.5)
+    await event.edit("[Processing.........             ] 50%")
+    await asyncio.sleep(0.5)
+    await event.edit("[Processing...........           ] 60%")
+    await asyncio.sleep(1)
+    await event.edit("[Processing.............         ] 75%")
+    await asyncio.sleep(0.5)
+    await event.edit("[Processing..................    ] 85%")
+    await asyncio.sleep(1)
+    await event.edit("[Processing..................... ] 95%")
+    await asyncio.sleep(0.5)
+    await event.edit("[Processing......................] 100%")
+    
+    await asyncio.sleep(1)
+    await event.edit("Access granted. Connection established.")
+    await asyncio.sleep(1)
+    await event.edit("System breach confirmed. Vulnerable.")
+    await asyncio.sleep(1.5)
+    await event.edit("WARNING: Intrusion detected now.")
+    await asyncio.sleep(1)
+    await event.edit("Your data compromised completely.")
+    await asyncio.sleep(1.5)
+    await event.edit("Accessing private information now.")
+    await asyncio.sleep(1.5)
+    await event.edit("System corruption in progress.")
+    await asyncio.sleep(2)
+    await event.edit("Prepare for consequences ahead.")
+    await asyncio.sleep(2)
+    await event.edit("System override complete. Done.🔴")
+
+
+@sattu.on(events.NewMessage(pattern=r"\.rabbit"))
+async def greeting(event):
+        await event.edit("""
+    (\(\ 
+    ( -.-)
+    o_(")(")
+      """)
+
+
 sattu.start()
 sattu.run_until_disconnected()
