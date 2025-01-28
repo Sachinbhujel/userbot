@@ -182,6 +182,20 @@ async def spam_stickers(event):
         await event.reply("❌ Please reply to a sticker to spam it.")
         
         
+@sattu.on(events.NewMessage(pattern=r'\.mspam (\d+)'))
+async def spam_messages(event):
+    count = int(event.pattern_match.group(1))
+    replied_message = await event.get_reply_message() 
+    if replied_message and replied_message.text: 
+        message = replied_message.text
+        for _ in range(count):
+            await event.respond(message) 
+            await asyncio.sleep(0.3) 
+        await event.delete() 
+    else:
+        await event.reply("❌ Please reply to a text message to spam it.")
+        
+        
 @sattu.on(events.NewMessage(pattern=r"\.hehe"))
 async def hehe(event):
     emojis = [
@@ -251,7 +265,6 @@ async def greeting(event):
     await event.edit("Prepare for consequences ahead.")
     await asyncio.sleep(2)
     await event.edit("System override complete. Done.🔴")
-
 
 
 sattu.start()
