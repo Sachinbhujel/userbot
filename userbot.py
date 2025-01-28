@@ -15,7 +15,7 @@ async def greet(event):
     await sent_message.edit('Hello Group Members! How are you all?')
 
 
-@sattu.on(events.NewMessage(outgoing=True, pattern='.hi'))
+@sattu.on(events.NewMessage(outgoing=True, pattern='^\.hi$'))
 async def hi(event):
     sent_message = event.message
     await sent_message.edit('''
@@ -183,19 +183,18 @@ async def hehe(event):
         await asyncio.sleep(2) 
         
         
-@sattu.on(events.NewMessage(outgoing=True, pattern='.ping'))
-async def alive(event):
-    sent_message = await event.edit("Hang tight, I'm checking the ping... ⏳")
-
-    emojis = ['⚡', '💥', '🌟', '🔥', '💨']
-    for _ in range(3):
-        random_emoji = random.choice(emojis)
-        await sent_message.edit(f"**{random_emoji}**")
-        await asyncio.sleep(1.4)
+@sattu.on(events.NewMessage(outgoing=True, pattern='\.ping'))
+async def ping(event):
+    emojis = [
+        "⚡", "💥", "🌟", "🔥",
+    ]
+    for emoji in emojis:
+        await event.edit(f"{emoji}") 
+        await asyncio.sleep(1.2) 
         
     random_ping = random.uniform(60, 68)
     formatted_ping = f"{random_ping:.2f}"
-    await sent_message.edit(f'🏓 **Pong!** (Ping: {formatted_ping}ms)') 
+    await event.edit(f'🏓 **Pong!** (Ping: {formatted_ping}ms)') 
 
 
 
