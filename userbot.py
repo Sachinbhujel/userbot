@@ -2,7 +2,7 @@ import requests
 import random
 import asyncio
 from telethon import TelegramClient, events
-from googletrans import Translator
+from telethon import events
 
 
 api_id = 22798308 
@@ -64,16 +64,21 @@ async def varshu(event):
 
 @sattu.on(events.NewMessage(outgoing=True, pattern='.alive'))
 async def alive(event):
+    # Send a temporary "Checking..." message
     sent_message = await event.edit("Checking...")
+
+    # Wait for a second before responding
     await asyncio.sleep(1)
 
-    random_ping = random.uniform(60, 68)
-    formatted_ping = f"{random_ping:.2f}"
-
-    await sent_message.edit(f'''
+    # Define the image URL and description
+    image_url = "https://www.comingsoon.net/wp-content/uploads/sites/3/2024/04/jujutsu-kaisen-jin-itadori-family-tree.png?resize=1024,576"
+    description = f'''
 Bot is alive! ✅
-Ping: {formatted_ping} ms
-    ''')
+    '''
+
+    # Send the image with the description
+    await sent_message.edit("Bot is alive! ✅")
+    await event.respond(description, file=image_url)
 
 
 @sattu.on(events.NewMessage(outgoing=True, pattern=r'\.spam (\d+) (.+)'))
@@ -209,19 +214,7 @@ async def ping(event):
     random_ping = random.uniform(60, 68)
     formatted_ping = f"{random_ping:.2f}"
     await event.edit(f'🏓 **Pong!** (Ping: {formatted_ping}ms)')
-    
-
-@sattu.on(events.NewMessage(outgoing=True, pattern=r'\.translate (.+)'))
-async def translate(event):
-    text = event.pattern_match.group(1)
-    
-    translator = Translator()
-    translated = translator.translate(text, dest='hi')
-    
-    translated_text = translated.text
-    await event.respond(f"**Original Text:**\n{text}\n\n**Translated to Hindi:**\n{translated_text}")
-    
-
-
+        
+        
 sattu.start()
 sattu.run_until_disconnected()
