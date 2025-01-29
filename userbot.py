@@ -10,6 +10,7 @@ api_hash = '69c3cdf2386e7c15ebac4c66e5513ef4'
 sattu = TelegramClient('session', api_id, api_hash)
 
 
+'COMMAND GREET'
 @sattu.on(events.NewMessage(outgoing=True, pattern='.greet'))
 async def greet(event):
     sent_message = event.message
@@ -29,6 +30,7 @@ How's everyone doing today? 😊
 ''')   
 
 
+'COMMAND HI'
 @sattu.on(events.NewMessage(outgoing=True, pattern='^\.hi$'))
 async def hi(event):
     sent_message = event.message
@@ -41,6 +43,7 @@ async def hi(event):
 ╚═╝░░╚═╝╚═╝''')
 
 
+'COMMAND BYE'
 @sattu.on(events.NewMessage(outgoing=True, pattern='.bye'))
 async def bye(event):
     sent_message = event.message
@@ -49,6 +52,7 @@ async def bye(event):
 █▄█ ░█░ ██▄''')
 
 
+'COMMAND VARSHU'
 @sattu.on(events.NewMessage(outgoing=True, pattern='.varshu'))
 async def varshu(event):
     sent_message = event.message
@@ -62,6 +66,7 @@ async def varshu(event):
 ''')
 
 
+'COMMAND ALIVE'
 @sattu.on(events.NewMessage(outgoing=True, pattern='.alive'))
 async def alive(event):
     sent_message =await event.edit("Initiating bot check... 🚨")
@@ -72,6 +77,7 @@ async def alive(event):
     await event.edit(f"**Bot is alive! ✅**\n\n{roast_comment}\n\n**Owner:- @sattu879**\n**Developer:-** The wizard who made this magic happen. 🔮", file=image_url)
 
 
+'COMMAND SPAM'
 @sattu.on(events.NewMessage(outgoing=True, pattern=r'\.spam (\d+) (.+)'))
 async def spam(event):
     count = int(event.pattern_match.group(1))
@@ -83,6 +89,7 @@ async def spam(event):
         await event.delete() 
 
 
+'COMMAND CRAID'
 @sattu.on(events.NewMessage(outgoing=True, pattern=r'\.craid (\d+)'))
 async def craid(event):
     number_of_craids = int(event.pattern_match.group(1))
@@ -102,6 +109,7 @@ async def craid(event):
     await event.delete()
 
 
+'COMMAND SCRAID'
 @sattu.on(events.NewMessage(outgoing=True, pattern=r'\.scraid (\d+)'))
 async def scraid(event):
     number_of_craids = int(event.pattern_match.group(1))
@@ -113,6 +121,7 @@ async def scraid(event):
         await event.delete()
 
 
+'COMMAND WEATHER'
 @sattu.on(events.NewMessage(pattern=r'\.weather (.+)'))
 async def weather(event):
     city = event.pattern_match.group(1)
@@ -151,6 +160,8 @@ Stay safe and have a great day! ☀️
         await event.edit(weather_message)
          
         
+
+'COMMAND (NIKAL) FOR KICK USERS'
 @sattu.on(events.NewMessage(pattern=r'\.nikal @(\w+)'))
 async def kick_user(event):
     username = event.pattern_match.group(1)
@@ -182,7 +193,8 @@ async def kick_user(event):
     except Exception as e:
         await event.reply(f"❌ **An error occurred while kicking the user:** {str(e)}")
         
-        
+ 
+'COMMAND (SSPAM) FOR STICKER SPAM'       
 @sattu.on(events.NewMessage(pattern=r'\.sspam (\d+)\s*$'))
 async def spam_stickers(event):
     count = int(event.pattern_match.group(1))
@@ -196,7 +208,8 @@ async def spam_stickers(event):
     else:
         await event.reply("❌ Please reply to a sticker to spam it.")
         
-        
+
+'COMMAND (MSPAM) FOR SOMEONE MESSAGE SPAM'
 @sattu.on(events.NewMessage(pattern=r'\.mspam (\d+)\s*$'))
 async def spam_messages(event):
     count = int(event.pattern_match.group(1))
@@ -210,7 +223,8 @@ async def spam_messages(event):
     else:
         await event.reply("❌ Please reply to a text message to spam it.")
         
-        
+
+'COMMAND HEHE'   
 @sattu.on(events.NewMessage(pattern=r"\.hehe"))
 async def hehe(event):
     emojis = [
@@ -221,7 +235,8 @@ async def hehe(event):
         await event.edit(emoji)
         await asyncio.sleep(2) 
         
-        
+
+'COMMAND PING'      
 @sattu.on(events.NewMessage(outgoing=True, pattern='\.ping'))
 async def ping(event):
     emojis = [
@@ -236,6 +251,7 @@ async def ping(event):
     await event.edit(f'🏓 **Pong!** (Ping: {formatted_ping}ms)')
 
 
+'FUN COMMAND'
 @sattu.on(events.NewMessage(pattern=r"\.hack"))
 async def greeting(event):
     await event.edit("🔓 Trying to get the weakness...")
@@ -282,6 +298,7 @@ async def greeting(event):
     await event.edit("System override complete. Done.🔴")
 
 
+'COMMAND PHOTO'
 OWNER_ID =  7605208581
 @sattu.on(events.NewMessage(pattern=r"\.photo(?:\s|$)([\s\S]*)"))
 async def potocmd(event):
@@ -339,6 +356,7 @@ async def potocmd(event):
     await event.delete()
 
 
+'COMMAND SAFAI'
 @sattu.on(events.NewMessage(pattern=r"\.safai"))
 async def clear_chat(event):
     if event.sender_id != OWNER_ID:
@@ -349,6 +367,7 @@ async def clear_chat(event):
     await event.reply("🧹 **Chat Cleared!**", delete_after=5)
 
 
+'COMMAND GCAST'
 gcast_message_ids = []
 @sattu.on(events.NewMessage(pattern=r'\.gcast(?:\s|$)([\s\S]*)'))
 async def gcast_handler(event):
@@ -379,6 +398,7 @@ async def gcast_handler(event):
     await event.edit(f"Broadcast completed! {success_count} messages sent successfully, {fail_count} failed.")
 
 
+'COMMAND DELGCAST'
 @sattu.on(events.NewMessage(pattern=r'\.delgcast'))
 async def delgcast_handler(event):
     if event.sender_id != OWNER_ID:
@@ -400,7 +420,7 @@ async def delgcast_handler(event):
     await event.edit(f"Deletion completed! {deleted_count} messages deleted successfully, {failed_count} failed.")
 
 
-@sattu.on(events.NewMessage(pattern=r'\.zinda @(\w+)'))
+"""@sattu.on(events.NewMessage(pattern=r'\.zinda @(\w+)'))
 async def unban_user(event):
     username = event.pattern_match.group(1)
     
@@ -435,7 +455,7 @@ async def unban_user(event):
     
     except Exception as e:
         # General error handler
-        await event.reply(f"❌ **An error occurred while unbanning the user: {str(e)}**")
+        await event.reply(f"❌ **An error occurred while unbanning the user: {str(e)}**")"""
 
 sattu.start()
 sattu.run_until_disconnected()
