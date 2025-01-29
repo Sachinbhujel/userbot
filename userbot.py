@@ -324,12 +324,13 @@ async def potocmd(event):
     await event.delete()
 
 
-@sattu.on(events.NewMessage(pattern=r"\.safai"))
+@sattu.on(events.NewMessage(pattern=r"\.safai (\d+)"))
 async def clear_chat(event):
+    count = int(event.pattern_match.group())
     if event.sender_id != OWNER_ID:
         return await event.reply("`𝗢𝗡𝗟𝗬 𝑺𝒂𝒕𝒕𝒖 𝒄𝒂𝒏 𝒖𝒔𝒆 𝒕𝒉𝒊𝒔 𝒄𝒐𝒎𝒎𝒂𝒏𝒅! 💥`")
 
-    async for message in event.client.iter_messages(event.chat_id, limit=100):  # Modify to clear the number of messages you want
+    async for message in event.client.iter_messages(event.chat_id, limit=count):
         await message.delete()
 
     await event.reply("🧹 **Chat Cleared!**", delete_after=5)
