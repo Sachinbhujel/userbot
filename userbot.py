@@ -155,11 +155,26 @@ Stay safe and have a great day! ☀️
 async def kick_user(event):
     username = event.pattern_match.group(1)
     
+    roast_messages = [
+        f"🚫 **{username} को ऐसे बाहर किया, जैसे आइसक्रीम गिरा दी हो! 🍦💨**",
+        f"🚫 **{username}, अब जा, कहीं तो अपनी इस अकल का सही इस्तेमाल कर! 🤦‍♂️**",
+        f"🚫 **तू तो कमाल का निकला! अब किसी को फेंकने की आदत हो गई क्या, {username}? 😎**",
+        f"🚫 **अबे {username}, तुझसे तो वो 'फेल' ही बेहतर था! 😂**",
+        f"🚫 **जैसे बिना आइसक्रीम के सर्दी, वैसे बिना तेरे के ग्रुप मजेदार! 💔🍦**",
+        f"🚫 **{username}, क्या तू खुद को बड़ा समझता है? यहाँ तो किसी की भी जगह नहीं पक्की! 😜**",
+        f"🚫 **जा भाई, कहीं और टाइम पे हमसे भिड़ना! 💥**",
+        f"🚫 **गुस्से में क्यों हो, भाई? कुछ ज्यादा ही बिगड़ रहे हो! {username} 😂**",
+        f"🚫 **{username}, यही काम करना था? लाओ कुछ और ट्रिक दिखाओ! 🙄**",
+        f"✅ **{username} को ग्रुप से ऐसे बाहर किया, जैसे आइसक्रीम गिरा दी हो! 🍦💨**"
+    ]
+    
     try:
         user = await sattu.get_entity(username) 
         await event.reply(f"🚫 **Kicking user {username}...**")
         await event.client.kick_participant(event.chat_id, user.id)
-        await event.reply(f"✅ **{username} को ग्रुप से ऐसे बाहर किया, जैसे आइसक्रीम गिरा दी हो! 🍦💨**")
+        
+        selected_roast_message = random.choice(roast_messages)
+        await event.reply(selected_roast_message)
     
     except ValueError:
         await event.reply(f"❌ **User {username} not found!**")
@@ -324,13 +339,12 @@ async def potocmd(event):
     await event.delete()
 
 
-@sattu.on(events.NewMessage(pattern=r"\.safai (\d+)"))
+@sattu.on(events.NewMessage(pattern=r"\.safai"))
 async def clear_chat(event):
-    count = int(event.pattern_match.group())
     if event.sender_id != OWNER_ID:
         return await event.reply("`𝗢𝗡𝗟𝗬 𝑺𝒂𝒕𝒕𝒖 𝒄𝒂𝒏 𝒖𝒔𝒆 𝒕𝒉𝒊𝒔 𝒄𝒐𝒎𝒎𝒂𝒏𝒅! 💥`")
 
-    async for message in event.client.iter_messages(event.chat_id, limit=count):
+    async for message in event.client.iter_messages(event.chat_id, limit=300):
         await message.delete()
     await event.reply("🧹 **Chat Cleared!**", delete_after=5)
 
@@ -367,11 +381,9 @@ async def gcast_handler(event):
 
 @sattu.on(events.NewMessage(pattern=r'\.delgcast'))
 async def delgcast_handler(event):
-    # Only allow the owner (you) to use the command
     if event.sender_id != OWNER_ID:
         return await event.reply("`Only the owner can use this command! 💥`")
 
-    # Delete each .gcast message
     deleted_count = 0
     failed_count = 0
 
@@ -386,7 +398,44 @@ async def delgcast_handler(event):
 
     # Inform the user after deletion
     await event.edit(f"Deletion completed! {deleted_count} messages deleted successfully, {failed_count} failed.")
+
+
+@sattu.on(events.NewMessage(pattern=r'\.zinda @(\w+)'))
+async def unban_user(event):
+    username = event.pattern_match.group(1)
     
+    # List of fun welcome/unban messages
+    welcome_messages = [
+        f"✅ **{username} वो कौन आया, जिसने सबको हिलाकर रख दिया?**",
+        f"✅ **{username} ग्रुप में शामिल होते ही सारा माहौल बदल गया!**",
+        f"✅ **{username} आ गया राजा! अब ग्रुप में मज़ा आएगा!**",
+        f"✅ **स्वागत है {username}! अब तो ग्रुप में धमाल मचाने का समय है!**",
+        f"✅ **{username} ग्रुप में शामिल होते ही रंग आ गए हैं!**",
+        f"✅ **{username} अब ग्रुप में और भी मज़ेदार बातें होंगी!**",
+        f"✅ **{username} सुपरस्टार आ गया! अब तो ग्रुप में हर दिन नया ड्रामा होगा!**",
+        f"✅ **{username} अब ग्रुप में धमाल मचाने का समय है!**",
+        f"✅ **स्वागत है {username}! अब ग्रुप का स्टाइल चार चाँद लगने वाला है!**"
+    ]
+    
+    try:
+        # Fetch user details using the provided username
+        user = await sattu.get_entity(username)
+        
+        # Attempt to unban the user
+        await event.reply(f"🚫 **Unbanning user {username}...**")
+        await event.client.unban(event.chat_id, user.id)
+        
+        # Randomly select a message to send after unbanning
+        selected_message = random.choice(welcome_messages)
+        await event.reply(selected_message)
+    
+    except ValueError:
+        # User not found in the system
+        await event.reply(f"❌ **User {username} not found!**")
+    
+    except Exception as e:
+        # General error handler
+        await event.reply(f"❌ **An error occurred while unbanning the user: {str(e)}**")
 
 sattu.start()
 sattu.run_until_disconnected()
