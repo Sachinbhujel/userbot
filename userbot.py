@@ -332,8 +332,61 @@ async def clear_chat(event):
 
     async for message in event.client.iter_messages(event.chat_id, limit=count):
         await message.delete()
-
     await event.reply("🧹 **Chat Cleared!**", delete_after=5)
+
+
+gcast_message_ids = []
+@sattu.on(events.NewMessage(pattern=r'\.gcast(?:\s|$)([\s\S]*)'))
+async def gcast_handler(event):
+    if event.sender_id != OWNER_ID:
+        return await event.reply("`Only the owner can use this command! 💥`")
+
+    if event.is_reply:
+        replied_message = await event.get_reply_message()
+        message_to_broadcast = replied_message.text if replied_message else "No message provided in the reply."
+    else:
+        message_to_broadcast = event.raw_text.split(maxsplit=1)[1] if len(event.raw_text.split()) > 1 else "No message provided"
+
+    success_count = 0
+    fail_count = 0
+
+    async for dialog in sattu.iter_dialogs():
+        try:
+            if dialog.is_user or dialog.is_group:
+                msg = await sattu.send_message(dialog.id, message_to_broadcast)
+                gcast_message_ids.append(msg.id) 
+                success_count += 1
+                print(f"Message sent to {dialog.name}")
+            else:
+                fail_count += 1
+        except Exception as e:
+            print(f"Failed to send message to {dialog.name}: {e}")
+            fail_count += 1
+    await event.edit(f"Broadcast completed! {success_count} messages sent successfully, {fail_count} failed.")
+
+
+@sattu.on(events.NewMessage(pattern=r'\.delgcast'))
+async def delgcast_handler(event):
+    # Only allow the owner (you) to use the command
+    if event.sender_id != OWNER_ID:
+        return await event.reply("`Only the owner can use this command! 💥`")
+
+    # Delete each .gcast message
+    deleted_count = 0
+    failed_count = 0
+
+    for msg_id in gcast_message_ids:
+        try:
+            await sattu.delete_messages(event.chat_id, msg_id)
+            deleted_count += 1
+            print(f"Deleted message with ID {msg_id}")
+        except Exception as e:
+            print(f"Failed to delete message {msg_id}: {e}")
+            failed_count += 1
+
+    # Inform the user after deletion
+    await event.edit(f"Deletion completed! {deleted_count} messages deleted successfully, {failed_count} failed.")
+    
 
 sattu.start()
 sattu.run_until_disconnected()
