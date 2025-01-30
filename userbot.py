@@ -491,8 +491,9 @@ async def greeting(event):
         await event.edit("🤍")
         await asyncio.sleep(2)
         await event.edit("You Are So Cute 🙈")
-        
-
+  
+      
+'COMMAND SAD' 
 @sattu.on(events.NewMessage(pattern=r"\.sad"))
 async def greeting(event):
         await event.edit("🙂")
@@ -522,6 +523,7 @@ async def greeting(event):
         await event.edit("😞")
         await asyncio.sleep(2)
         await event.edit("😩")
+
 
 sattu.start()
 sattu.run_until_disconnected()
