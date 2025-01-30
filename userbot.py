@@ -420,7 +420,7 @@ async def delgcast_handler(event):
     await event.edit(f"Deletion completed! {deleted_count} messages deleted successfully, {failed_count} failed.")
 
 
-"""@sattu.on(events.NewMessage(pattern=r'\.zinda @(\w+)'))
+@sattu.on(events.NewMessage(pattern=r'\.zinda (\S+)'))
 async def unban_user(event):
     username = event.pattern_match.group(1)
     
@@ -441,9 +441,9 @@ async def unban_user(event):
         # Fetch user details using the provided username
         user = await sattu.get_entity(username)
         
-        # Attempt to unban the user
+        # Attempt to unban the user by editing their permissions
         await event.reply(f"🚫 **Unbanning user {username}...**")
-        await event.client.unban(event.chat_id, user.id)
+        await event.client.edit_permissions(event.chat_id, user.id, view_messages=True)
         
         # Randomly select a message to send after unbanning
         selected_message = random.choice(welcome_messages)
@@ -455,7 +455,7 @@ async def unban_user(event):
     
     except Exception as e:
         # General error handler
-        await event.reply(f"❌ **An error occurred while unbanning the user: {str(e)}**")"""
+        await event.reply(f"❌ **An error occurred while unbanning the user: {str(e)}**")
 
 sattu.start()
 sattu.run_until_disconnected()
