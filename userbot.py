@@ -420,6 +420,7 @@ async def delgcast_handler(event):
     await event.edit(f"Deletion completed! {deleted_count} messages deleted successfully, {failed_count} failed.")
 
 
+'COMMAND UNBAN'
 @sattu.on(events.NewMessage(pattern=r'\.zinda (\S+)'))
 async def unban_user(event):
     username = event.pattern_match.group(1)
@@ -456,6 +457,71 @@ async def unban_user(event):
     except Exception as e:
         # General error handler
         await event.reply(f"❌ **An error occurred while unbanning the user: {str(e)}**")
+        
+        
+'COMMAND HEART'    
+@sattu.on(events.NewMessage(pattern=r"\.heart"))
+async def greeting(event):
+        await event.edit("💘")
+        await asyncio.sleep(2)
+        await event.edit("💝")
+        await asyncio.sleep(2)
+        await event.edit("💖")
+        await asyncio.sleep(2)
+        await event.edit("💗")
+        await asyncio.sleep(2)
+        await event.edit("💓")
+        await asyncio.sleep(2)
+        await event.edit("💞")
+        await asyncio.sleep(2)
+        await event.edit("💕")
+        await asyncio.sleep(2)
+        await event.edit("💟")
+        await asyncio.sleep(2)
+        await event.edit("❣️")
+        await asyncio.sleep(2)
+        await event.edit("❤️")
+        await asyncio.sleep(2)
+        await event.edit("💜")
+        await asyncio.sleep(2)
+        await event.edit("🤎")
+        await asyncio.sleep(2)
+        await event.edit("🖤")
+        await asyncio.sleep(2)
+        await event.edit("🤍")
+        await asyncio.sleep(2)
+        await event.edit("You Are So Cute 🙈")
+        
+
+@sattu.on(events.NewMessage(pattern=r"\.sad"))
+async def greeting(event):
+        await event.edit("🙂")
+        await asyncio.sleep(2)
+        await event.edit("🙃")
+        await asyncio.sleep(2)
+        await event.edit("🥲")
+        await asyncio.sleep(2)
+        await event.edit("😐")
+        await asyncio.sleep(2)
+        await event.edit("😕")
+        await asyncio.sleep(2)
+        await event.edit("🙁")
+        await asyncio.sleep(2)
+        await event.edit("☹️")
+        await asyncio.sleep(2)
+        await event.edit("😰")
+        await asyncio.sleep(2)
+        await event.edit("😥")
+        await asyncio.sleep(2)
+        await event.edit("😢")
+        await asyncio.sleep(2)
+        await event.edit("😭")
+        await asyncio.sleep(2)
+        await event.edit("😣")
+        await asyncio.sleep(2)
+        await event.edit("😞")
+        await asyncio.sleep(2)
+        await event.edit("😩")
 
 sattu.start()
 sattu.run_until_disconnected()
