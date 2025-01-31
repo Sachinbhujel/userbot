@@ -545,7 +545,6 @@ async def info_command(event):
         print(f"An error occurred: {str(e)}")
         await event.edit(f"An error occurred: {str(e)}")
 
-    
 
 sattu.start()
 sattu.run_until_disconnected()
