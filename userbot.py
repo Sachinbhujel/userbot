@@ -503,5 +503,12 @@ async def greeting(event):
         await event.edit("😩")
 
 
+@sattu.on(events.NewMessage(pattern='/info'))
+async def info_command(event):
+    user_id = event.text.split(' ', 1)[1]
+    user = await client.get_entity(user_id)
+    await event.reply(f"User Info: \nName: {user.first_name} {user.last_name}\nUsername: @{user.username}")
+    
+
 sattu.start()
 sattu.run_until_disconnected()
