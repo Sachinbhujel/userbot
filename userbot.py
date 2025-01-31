@@ -3,6 +3,7 @@ import random
 import asyncio
 from telethon import TelegramClient, events
 from telethon import events
+from telethon.errors import SessionPasswordNeededError
 
 
 api_id = 22798308 
@@ -503,11 +504,47 @@ async def greeting(event):
         await event.edit("😩")
 
 
-@sattu.on(events.NewMessage(pattern='/info'))
+'COMMAND FOR USER INFORMATION'
+@sattu.on(events.NewMessage(pattern='.info'))
 async def info_command(event):
-    user_id = event.text.split(' ', 1)[1]
-    user = await client.get_entity(user_id)
-    await event.reply(f"User Info: \nName: {user.first_name} {user.last_name}\nUsername: @{user.username}")
+    try:
+        if event.is_reply:
+            replied_message = await event.get_reply_message()
+            user = replied_message.sender
+
+            username = f"@{user.username}" if user.username else "No username"
+            full_name = f"{user.first_name} {user.last_name if user.last_name else ''}".strip()
+
+            bio = getattr(user, 'bio', "No bio available.")
+            user_id = user.id
+
+            try:
+                pfp = await sattu.download_profile_photo(user, file="profile_picture.jpg")
+            except Exception as e:
+                pfp = None
+                print(f"Error downloading profile photo: {e}")
+
+            pfp_caption = f"""
+**🆄🆂🅴🆁 🅸🅽🅵🅾:**
+
+• **Name:** {full_name}
+• **Username:** {username}
+• **User ID:** `{user_id}`
+• **Bio:** {bio}
+"""
+
+            if pfp:
+                await event.edit(pfp_caption, file=pfp, parse_mode='markdown')
+            else:
+                await event.edit(pfp_caption, parse_mode='markdown')
+        
+        else:
+            await event.edit("𐌐𐌋𐌄𐌀𐌔𐌄 𐌓𐌄𐌐𐌋𐌙 𐌕Ꝋ 𐌀 𐌌𐌄𐌔𐌔𐌀Ᏽ𐌄 𐌕Ꝋ Ᏽ𐌄𐌕 𐌕𐋅𐌀𐌕 𐌵𐌔𐌄𐌓'𐌔 𐌉𐌍𐌅Ꝋ")
+    
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+        await event.edit(f"An error occurred: {str(e)}")
+
     
 
 sattu.start()
