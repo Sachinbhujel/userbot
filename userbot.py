@@ -4,10 +4,16 @@ import asyncio
 from telethon import TelegramClient, events
 from telethon import events
 from telethon.errors import SessionPasswordNeededError
+from dotenv import load_dotenv
 
 
-api_id = 22798308 
-api_hash = '69c3cdf2386e7c15ebac4c66e5513ef4'
+# Load environment variables from .env file
+load_dotenv()
+
+# Get API credentials from environment variables
+api_id = int(os.getenv('API_ID'))
+api_hash = os.getenv('API_HASH')
+
 sattu = TelegramClient('session', api_id, api_hash)
 
 
