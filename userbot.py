@@ -60,20 +60,6 @@ async def bye(event):
 █▄█ ░█░ ██▄''')
 
 
-'COMMAND VARSHU'
-@sattu.on(events.NewMessage(outgoing=True, pattern='.varshu'))
-async def varshu(event):
-    sent_message = event.message
-    await sent_message.edit('''
-╭╮╱╱╭╮╱╱╱╱╱╱╭╮
-┃╰╮╭╯┃╱╱╱╱╱╱┃┃
-╰╮┃┃╭┻━┳━┳━━┫╰━┳━━╮
-╱┃╰╯┃╭╮┃╭┫━━┫╭╮┃╭╮┃
-╱╰╮╭┫╭╮┃┃┣━━┃┃┃┃╭╮┃
-╱╱╰╯╰╯╰┻╯╰━━┻╯╰┻╯╰╯
-''')
-
-
 'COMMAND ALIVE'
 @sattu.on(events.NewMessage(outgoing=True, pattern='.alive'))
 async def alive(event):
